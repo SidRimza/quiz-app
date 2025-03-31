@@ -18,6 +18,11 @@ import QuizRules from './QuizRules';
 
 const Logo = styled(Typography)<TypographyProps>(() => ({
   marginBottom: '1rem',
+  fontFamily: "Outfit, sens-serif",
+  fontWeight: 500,
+  fontSize: "64px",
+  lineHeight: "100%",
+  letterSpacing: "0%",
   '& .quiz': {
     fontFamily: "Outfit",
     fontWeight: 250,
@@ -32,12 +37,16 @@ const Logo = styled(Typography)<TypographyProps>(() => ({
     fontWeight: 700,
     fontSize: "64px",
     lineHeight: "100%",
-    letterSpacing: "0%"
+    letterSpacing: "0%",
   },
-  '@media screen and (min-width: 374px)': {
-    fontSize: '32px',
+  '@media (max-width: 600px)': {
+    fontSize: "26px",
+    '& .quiz, & .mania': {
+      fontSize: "26px",
+    }
   }
 }));
+
 
 const StyleTypography = styled(Typography)(() => ({
   fontFamily: 'Outfit',
@@ -92,8 +101,11 @@ const TopicBox = styled(Box)<{ selected?: boolean }>(({ selected }) => ({
     borderColor: '#E91E63',
   },
 }));
+interface WelcomeProps {
+  setUser: React.Dispatch<React.SetStateAction<string>>;
+}
 
-const Welcome: React.FC = () => {
+const Welcome: React.FC<WelcomeProps> = ({setUser}) => {
   const [name, setName] = useState('');
   const [selectedTopic, setSelectedTopic] = useState('');
   const { state, selectCategory, setUserName, setRulesOpen } = useQuiz();
@@ -104,6 +116,7 @@ const Welcome: React.FC = () => {
       const category = quizData.categories.find(cat => cat.name === selectedTopic);
       if (category) {
         selectCategory(category);
+        setUser(name)
       }
     }
   };
@@ -116,10 +129,9 @@ const Welcome: React.FC = () => {
     setRulesOpen(false);
   };
   return (
-    <Container maxWidth="md" sx={{ height: '100vh', display: 'flex', alignItems: 'center' }}>
+    <Container maxWidth="md" sx={{ display: 'flex', alignItems: 'center' }}>
       <Box sx={{
-        width: '678px',
-        maxWidth: '678px',
+         width: '100%',
         margin: '0 auto',
         padding: '2rem',
         display: 'flex',
@@ -127,23 +139,12 @@ const Welcome: React.FC = () => {
         alignItems: 'center',
         gap: 2.5
       }}>
-        <Logo style={{
-          fontFamily: "Outfit, sens-serif",
-          fontWeight: 500,
-          fontSize: "64px",
-          lineHeight: "100%",
-          letterSpacing: "0%",
-          width: "700px"
-        }}>
+        <Logo>
           Welcome to <span className="quiz">QUIZ</span><span className="mania">Mania</span>
         </Logo>
 
         <Box sx={{
           background: "#D9D9D94D",
-          width: 600,
-          height: 82,
-          top: "249px",
-          left: "420px",
           borderRadius: "8px",
           paddingTop: "12px",
           paddingRight: "16px",
@@ -157,7 +158,6 @@ const Welcome: React.FC = () => {
           </Typography>
           <StyleTypography className='quiz-rules'
             onClick={() => {
-              console.log("setRulesopen")
               setRulesOpen(true)
             }}>
             Quiz rules
@@ -190,13 +190,26 @@ const Welcome: React.FC = () => {
             Please select topic to continue
           </Typography>
           <RadioGroup value={selectedTopic} onChange={(e) => handleTopicSelect(e.target.value)}>
-            <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2.5 }}>
+            <Box sx={{ 
+              display: 'grid',
+              gridTemplateColumns: { 
+                xs: 'repeat(12, 1fr)',
+                md: 'repeat(12, 1fr)'
+              },
+              gap: { xs: 1.5, md: 2.5 }
+            }}>
               {quizData.categories.map((category) => (
                 <TopicBox
                   key={category.id}
                   selected={selectedTopic === category.name}
                   onClick={() => handleTopicSelect(category.name)}
-                  sx={{ height: '56px' }}
+                  sx={{ 
+                    height: '56px',
+                    gridColumn: {
+                      xs: 'span 12',
+                      md: 'span 6'
+                    }
+                  }}
                 >
                   <Box sx={{ width: 24, display: 'flex', alignItems: 'center' }}>
                     {selectedTopic === category.name ? (
@@ -248,4 +261,4 @@ const Welcome: React.FC = () => {
   );
 };
 
-export default Welcome; 
+export default Welcome;

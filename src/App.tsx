@@ -9,24 +9,26 @@ import { Header } from 'components/Header';
 interface AppContentProps {
   exitQuizState?: boolean;
   setExitQuizState:  React.Dispatch<React.SetStateAction<boolean>>;
+  setUserName: React.Dispatch<React.SetStateAction<string>>;
 }
 const App: React.FC = () => {
   const [exitQuizState, setExitQuizState] = useState<boolean>(false);
+  const [userName, setUserName] = useState<string>('');
 
   return (
     <QuizProvider>
-      <Header isExitQuiz={exitQuizState} />
-      <AppContent setExitQuizState={setExitQuizState} />
+      <Header isExitQuiz={exitQuizState} userName={userName} />
+      <AppContent setExitQuizState={setExitQuizState} setUserName={setUserName} />
     </QuizProvider>
   );
 };
 
-const AppContent: React.FC<AppContentProps> = ({setExitQuizState}) => {
+const AppContent: React.FC<AppContentProps> = ({setExitQuizState, setUserName}) => {
   const { state, resetQuiz } = useQuiz();
 
   // Show Welcome screen if no username or no category is selected
   if (!state.userName || !state.currentCategory) {
-    return <Welcome />;
+    return <Welcome setUser={setUserName} />;
   }
 
   // Show Results screen if quiz is complete

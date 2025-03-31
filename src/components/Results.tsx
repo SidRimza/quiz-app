@@ -4,7 +4,6 @@ import {
   Container,
   Typography,
   Button,
-  Avatar,
   styled,
 } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -19,13 +18,6 @@ const ScoreCircle = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   margin: '24px auto',
-}));
-
-const UserAvatar = styled(Avatar)(({ theme }) => ({
-  width: 32,
-  height: 32,
-  backgroundColor: theme.palette.primary.main,
-  fontSize: '1rem',
 }));
 
 interface ResultsProps {
@@ -53,9 +45,7 @@ const Results: React.FC<ResultsProps> = ({
   return (
     <Container maxWidth="sm">
       <Box sx={{ mt: 8, textAlign: 'center' }}>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
-          <UserAvatar>{userName.charAt(0).toUpperCase()}</UserAvatar>
-        </Box>
+    
 
         {isGoodScore ? (
           <CheckCircleIcon

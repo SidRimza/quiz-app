@@ -60,11 +60,17 @@ const StyledButton = styled(Button)(({ theme }) => ({
 const Quiz: React.FC<{ setExitQuizState:  React.Dispatch<React.SetStateAction<boolean>>}> = ({setExitQuizState}) => {
   const { state, selectAnswer, nextQuestion, skipQuestion, setRulesOpen } = useQuiz();
 
+  useEffect(() => {
+      setRulesOpen(!state.isRulesOpen);
+      return () => {
+        setRulesOpen(!state.isRulesOpen);
+      };
+  }, []);
   
   useEffect(() => {
     let timer: NodeJS.Timeout;
+    setExitQuizState(true);
     if (state.timeRemaining > 0 && !state.selectedAnswer && !state.isRulesOpen) {
-      setExitQuizState(true);
       timer = setInterval(() => {
         if (state.timeRemaining === 1) {
           skipQuestion();
@@ -72,7 +78,7 @@ const Quiz: React.FC<{ setExitQuizState:  React.Dispatch<React.SetStateAction<bo
       }, 1000);
     }
     return () => {
-      setExitQuizState(false)
+      setExitQuizState(false);
       clearInterval(timer)
     };
   }, [state.timeRemaining, state.selectedAnswer, skipQuestion, state.isRulesOpen]);

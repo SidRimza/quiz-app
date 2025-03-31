@@ -7,37 +7,20 @@ const CategorySelection: React.FC = () => {
   const { selectCategory } = useQuiz();
 
   return (
-    <Container maxWidth="md">
-      <Box sx={{ mt: 8, mb: 4 }}>
+    <Container maxWidth="md" className="category-selection">
+      <Box className="header">
         <Typography variant="h3" component="h1" align="center" gutterBottom>
-          Quiz App
+          QuizMania
         </Typography>
         <Typography variant="h5" component="h2" align="center" color="textSecondary" gutterBottom>
           Select a Category
         </Typography>
       </Box>
 
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
-          gap: 3,
-        }}
-      >
+      <Box className="category-grid">
         {quizData.map((category) => (
-          <Card
-            key={category.id}
-            sx={{
-              height: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              transition: 'transform 0.2s',
-              '&:hover': {
-                transform: 'scale(1.02)',
-              },
-            }}
-          >
-            <CardContent sx={{ flexGrow: 1 }}>
+          <Card key={category.id} className="category-card">
+            <CardContent className="card-content">
               <Typography variant="h5" component="h3" gutterBottom>
                 {category.name}
               </Typography>
@@ -45,7 +28,7 @@ const CategorySelection: React.FC = () => {
                 {category.questions.length} questions
               </Typography>
             </CardContent>
-            <Box sx={{ p: 2 }}>
+            <Box className="button-container">
               <Button
                 variant="contained"
                 color="primary"
@@ -62,4 +45,4 @@ const CategorySelection: React.FC = () => {
   );
 };
 
-export default CategorySelection; 
+export default CategorySelection;
